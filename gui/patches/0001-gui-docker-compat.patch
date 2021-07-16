@@ -1,0 +1,47 @@
+From f27d1ec5043941860376753166d9e35acef32fea Mon Sep 17 00:00:00 2001
+From: Nobody
+Date: Thu, 15 Jul 2021 16:04:21 -0600
+Subject: [PATCH] gui docker compat
+
+---
+ package.json       | 4 ++--
+ src/util/config.js | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/package.json b/package.json
+index 90e3babf..7b199a20 100644
+--- a/package.json
++++ b/package.json
+@@ -11,14 +11,14 @@
+   },
+   "scripts": {
+     "start": "cross-env NODE_ENV=development webpack serve --config ./webpack.react.babel.ts",
+-    "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron .",
++    "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron . --no-sandbox",
+     "dev:react": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=4096 webpack serve --config webpack.react.babel.ts --mode development",
+     "dev": "npm run locale && concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
+     "dev:fast": "concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
+     "build:electron": "cross-env NODE_ENV=production webpack --config ./webpack.electron.babel.ts",
+     "build:react": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 webpack --config ./webpack.react.babel.ts",
+     "build": "npm run locale && npm run build:electron && npm run build:react",
+-    "electron": "electron .",
++    "electron": "electron . --no-sandbox",
+     "locale:extract": "lingui extract",
+     "locale:compile": "lingui compile",
+     "locale": "lingui extract && lingui compile",
+diff --git a/src/util/config.js b/src/util/config.js
+index 5faac066..94311e94 100644
+--- a/src/util/config.js
++++ b/src/util/config.js
+@@ -49,7 +49,7 @@ function loadConfig(net) {
+ 
+ function manageDaemonLifetime() {
+   // only start/stop daemon if it is running locally
+-  return self_hostname === 'localhost';
++  return false; //self_hostname === 'localhost';
+ }
+ 
+ module.exports = {
+-- 
+2.30.2
+

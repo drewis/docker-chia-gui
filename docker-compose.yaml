@@ -1,0 +1,23 @@
+version: "3.2"
+services:
+  gui:
+    build: gui
+    ports:
+      - 8444:8444
+      - 8447:8447
+      - 5800:5800
+    environment:
+      TZ: "America/Denver"
+      USER_ID: 1000
+      GROUP_ID: 1000
+    sysctls:
+      net.ipv6.conf.lo.disable_ipv6: 0
+    volumes:
+      - gui_config:/config
+      - /srv/chia/config:/chia/.chia
+      - /tank/chia/plots:/chia-plots-0
+    restart: always
+
+volumes:
+  gui_config:
+
