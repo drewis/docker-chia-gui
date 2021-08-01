@@ -14,8 +14,7 @@ services:
       net.ipv6.conf.lo.disable_ipv6: 0
     volumes:
       - gui_config:/config
-      - /srv/chia/config:/chia/.chia
-      - /tank/chia/plots:/chia-plots-0
+      - /srv/chia/farmer:/chia/.chia
     restart: always
 
 volumes:
