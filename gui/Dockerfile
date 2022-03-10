@@ -44,7 +44,13 @@ USER chia
 ARG BRANCH="latest"
 RUN git clone --branch ${BRANCH} --recursive \
 	https://github.com/Chia-Network/chia-blockchain.git
+
+# Copy patches
 COPY patches/ chia-blockchain/
+
+# Install patches
+RUN cd chia-blockchain/chia-blockchain-gui \
+&& patch -p1 < ../0001-gui-docker-compat.patch
 
 # Install chia
 RUN cd chia-blockchain \
@@ -59,7 +65,6 @@ RUN cd chia-blockchain \
 # TODO still need to deal with all the startService calls in patch
 #      since we manage the daemons the gui should not try to start them
 RUN cd chia-blockchain/chia-blockchain-gui \
-&& patch -p1 < ../0001-gui-docker-compat.patch \
 && . ../venv/bin/activate \
 && npm install \
 && (npm audit fix || true) \
