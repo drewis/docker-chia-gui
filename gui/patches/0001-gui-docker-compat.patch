@@ -1,32 +1,33 @@
-From 0c20e8c3062a5d2a61d19af38545335013f93953 Mon Sep 17 00:00:00 2001
+From a5e57cfeac88a2dd56bbe6bcac7aef1184884d87 Mon Sep 17 00:00:00 2001
 From: Drew Sutherland <git@drewis.fun>
-Date: Fri, 18 Feb 2022 12:26:16 -0700
+Date: Thu, 21 Jul 2022 16:28:53 -0600
 Subject: [PATCH] gui docker compat
 
 ---
- package.json       | 4 ++--
- src/util/config.js | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ packages/gui/package.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/package.json b/package.json
-index b2f0977a..937c56fb 100644
---- a/package.json
-+++ b/package.json
+diff --git a/packages/gui/package.json b/packages/gui/package.json
+index b2af9586..8dd956fa 100644
+--- a/packages/gui/package.json
++++ b/packages/gui/package.json
 @@ -11,14 +11,14 @@
      },
      "scripts": {
-         "start": "cross-env NODE_ENV=development webpack serve --config ./webpack.react.babel.ts",
+         "start": "npm run electron",
 -        "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron .",
-+        "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron . --no-sandbox",
-         "dev:react": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=4096 webpack serve --config webpack.react.babel.ts --mode development",
++        "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron --no-sandbox .",
+         "dev:react": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=8192 webpack serve --config webpack.react.babel.ts --mode development",
          "dev": "npm run locale && concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
          "dev:fast": "concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
          "build:electron": "cross-env NODE_ENV=production webpack --config ./webpack.electron.babel.ts",
          "build:react": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 webpack --config ./webpack.react.babel.ts",
          "build": "npm run locale && npm run build:electron && npm run build:react",
 -        "electron": "electron .",
-+        "electron": "electron . --no-sandbox",
++        "electron": "electron --no-sandbox .",
          "locale:extract": "lingui extract",
          "locale:compile": "lingui compile",
-         "locale": "lingui extract && lingui compile",
+         "locale": "lingui extract && lingui compile"
+-- 
+2.25.1
 

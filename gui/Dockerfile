@@ -41,7 +41,7 @@ WORKDIR /chia
 USER chia
 
 # Clone chia
-ARG BRANCH="latest"
+ARG BRANCH="main"
 RUN git clone --branch ${BRANCH} --recursive \
 	https://github.com/Chia-Network/chia-blockchain.git
 
