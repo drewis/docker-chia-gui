@@ -1,20 +1,20 @@
-FROM jlesage/baseimage-gui:ubuntu-18.04
+FROM jlesage/baseimage-gui:ubuntu-20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 # Stuff for chia install
 RUN apt-get install -y \
 	bash git lsb-release sudo apt-utils curl wget bc \
-	python3.7-venv python3.7-distutils \
+	python3.8-venv python3.8-distutils \
 	nodejs libxss1
 # Electron build deps,
 # TODO replace with proper runtime deps
 RUN apt-get install -y \
 	build-essential clang libdbus-1-dev libgtk-3-dev \
-	libnotify-dev libgnome-keyring-dev \
+	libnotify-dev \
 	libasound2-dev libcap-dev libcups2-dev libxtst-dev \
 	libxss1 libnss3-dev gcc-multilib g++-multilib curl \
-	gperf bison python-dbusmock openjdk-8-jre
+	gperf bison python3-dbusmock openjdk-11-jre
 
 # Update npm for 1804
 RUN npm install -g n \
@@ -26,9 +26,9 @@ RUN npm install -g n \
 #      we make will be lost, this is notable for the npm install later
 RUN rm /etc/cont-init.d/00-app-user-map.sh \
 && rm /etc/cont-init.d/00-set-home.sh \
-&& useradd -d /chia -m -u 1000 -U -s /bin/bash chia
-#&& useradd -d /chia -m -u 1000 -U -G sudo -s /bin/bash chia \
-#&& echo "%sudo ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
+&& useradd -d /chia -m -u 1000 -U -G sudo -s /bin/bash chia \
+&& echo "%sudo ALL = (ALL) NOPASSWD: ALL" >> /etc/sudoers
+#&& useradd -d /chia -m -u 1000 -U -s /bin/bash chia
 
 # Move xdg off /cache
 # TODO XDG_DATA_HOME controls where python_keyring dir is
@@ -54,21 +54,9 @@ RUN cd chia-blockchain/chia-blockchain-gui \
 
 # Install chia
 RUN cd chia-blockchain \
-&& python3.7 -m venv venv \
-&& . ./venv/bin/activate \
-&& python -m pip install --upgrade pip \
-&& python -m pip install wheel \
-&& python -m pip install --extra-index-url https://pypi.chia.net/simple/ miniupnpc==2.2.2 \
-&& python -m pip install -e . --extra-index-url https://pypi.chia.net/simple/
-
-# Install chia gui
-# TODO still need to deal with all the startService calls in patch
-#      since we manage the daemons the gui should not try to start them
-RUN cd chia-blockchain/chia-blockchain-gui \
-&& . ../venv/bin/activate \
-&& npm install \
-&& (npm audit fix || true) \
-&& npm run build
+&& ./install.sh \
+&& . ./activate \
+&& ./install-gui.sh
 
 USER 0
 

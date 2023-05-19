@@ -15,7 +15,7 @@ services:
     volumes:
       - gui_config:/config
       - /tub/chia/farmer:/chia/.chia
-    restart: always
+    restart: unless-stopped
 
 volumes:
   gui_config:

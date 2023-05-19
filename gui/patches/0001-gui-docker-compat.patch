@@ -1,33 +1,31 @@
-From a5e57cfeac88a2dd56bbe6bcac7aef1184884d87 Mon Sep 17 00:00:00 2001
+From 5ad495b70a8bbc4779f448ef72d711cfad136d1f Mon Sep 17 00:00:00 2001
 From: Drew Sutherland <git@drewis.fun>
-Date: Thu, 21 Jul 2022 16:28:53 -0600
+Date: Fri, 19 May 2023 08:40:35 -0600
 Subject: [PATCH] gui docker compat
 
----
- packages/gui/package.json | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/packages/gui/package.json b/packages/gui/package.json
-index b2af9586..8dd956fa 100644
+index 8d595a6e1..149bcf09f 100644
 --- a/packages/gui/package.json
 +++ b/packages/gui/package.json
-@@ -11,14 +11,14 @@
-     },
-     "scripts": {
-         "start": "npm run electron",
--        "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron .",
-+        "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron --no-sandbox .",
-         "dev:react": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=8192 webpack serve --config webpack.react.babel.ts --mode development",
-         "dev": "npm run locale && concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
-         "dev:fast": "concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
-         "build:electron": "cross-env NODE_ENV=production webpack --config ./webpack.electron.babel.ts",
-         "build:react": "cross-env NODE_ENV=production NODE_OPTIONS=--max_old_space_size=4096 webpack --config ./webpack.react.babel.ts",
-         "build": "npm run locale && npm run build:electron && npm run build:react",
--        "electron": "electron .",
-+        "electron": "electron --no-sandbox .",
-         "locale:extract": "lingui extract",
-         "locale:compile": "lingui compile",
-         "locale": "lingui extract && lingui compile"
+@@ -125,7 +125,7 @@
+   },
+   "scripts": {
+     "start": "npm run electron",
+-    "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron .",
++    "dev:electron": "cross-env NODE_ENV=development webpack --config webpack.electron.babel.ts --mode development && electron . --no-sandbox",
+     "dev:react": "cross-env NODE_ENV=development NODE_OPTIONS=--max_old_space_size=8192 webpack serve --config webpack.react.babel.ts --mode development",
+     "dev": "npm run locale && concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
+     "dev:skipLocales": "concurrently --kill-others \"npm run dev:react\" \"npm run dev:electron\"",
+@@ -134,7 +134,7 @@
+     "build:js": "npm run build:electron && npm run build:react",
+     "build:ci": "npm run locale:compile && npm run build:js",
+     "build": "npm run locale && npm run build:js",
+-    "electron": "electron .",
++    "electron": "electron . --no-sandbox",
+     "locale:extract": "lingui extract",
+     "locale:clean": "lingui extract --clean",
+     "locale:compile": "lingui compile",
 -- 
 2.25.1
 
